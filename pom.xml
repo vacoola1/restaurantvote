@@ -7,6 +7,7 @@
     <groupId>ua.vacoola</groupId>
     <artifactId>restaurantvote</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <name>Restaurant vote</name>
     <url>http://restorauntvote.herokuapp.com/</url>

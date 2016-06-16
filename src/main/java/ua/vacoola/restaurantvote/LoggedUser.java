@@ -2,6 +2,8 @@ package ua.vacoola.restaurantvote;
 
 import ua.vacoola.restaurantvote.model.BaseEntity;
 
+import static java.util.Objects.requireNonNull;
+
 public class LoggedUser {
     private static int id = BaseEntity.START_SEQ;
 
@@ -15,5 +17,4 @@ public class LoggedUser {
     public static void setId(int id) {
         LoggedUser.id = id;
     }
-
 }

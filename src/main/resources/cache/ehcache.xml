@@ -1,11 +1,10 @@
-<!--
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="ehcache.xsd"
          updateCheck="false">
 
     <diskStore path="java.io.tmpdir"/>
 
-    &lt;!&ndash; objects are evicted from the cache every 60 seconds &ndash;&gt;
+    <!-- objects are evicted from the cache every 60 seconds -->
     <defaultCache
             maxElementsInMemory="10000"
             eternal="false"
@@ -30,4 +29,3 @@
            maxElementsInMemory="25000"/>
 
 </ehcache>
--->

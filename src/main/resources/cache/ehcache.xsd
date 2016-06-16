@@ -1,4 +1,3 @@
-<!--
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.7">
 
@@ -87,7 +86,7 @@
             <xs:attribute name="rejoin" type="xs:boolean" use="optional" default="false"/>
         </xs:complexType>
     </xs:element>
-    &lt;!&ndash; add clone support for addition of cacheExceptionHandler. Important! &ndash;&gt;
+    <!-- add clone support for addition of cacheExceptionHandler. Important! -->
     <xs:element name="defaultCache">
         <xs:complexType>
             <xs:sequence>
@@ -417,4 +416,4 @@
             <xs:pattern value="([0-9]+[bBkKmMgG]?|100%|[0-9]{1,2}%)"/>
         </xs:restriction>
     </xs:simpleType>
-</xs:schema>-->
+</xs:schema>

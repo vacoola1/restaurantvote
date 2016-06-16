@@ -33,7 +33,7 @@
     </beans>
 
     <beans profile="tomcat">
-        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/topjava"/>
+        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/restaurantvote"/>
         <context:property-placeholder location="classpath:db/tomcat.properties" system-properties-mode="OVERRIDE"/>
     </beans>
 
@@ -43,7 +43,7 @@
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 
               p:dataSource-ref="dataSource"
-              p:packagesToScan="ru.javawebinar.**.model">
+              p:packagesToScan="ua.vacoola.**.model">
             <!--p:persistenceUnitName="persistenceUnit">-->
 
             <property name="jpaPropertyMap">
@@ -77,10 +77,10 @@
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
         <bean class="ua.vacoola.restaurantvote.repository.JpaUtil"/>
+
+        <context:component-scan base-package="ua.vacoola.**.repository.jpa"/>
+
     </beans>
 
-    <beans profile="jpa">
-        <context:component-scan base-package="ua.vacoola.**.repository.jpa"/>
-    </beans>
 
 </beans>
