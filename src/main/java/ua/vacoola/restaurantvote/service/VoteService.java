@@ -19,10 +19,10 @@ public interface VoteService {
 
     Vote getNow(int userId);
 
-    Vote save(int restaurantId, int day, int userId);
+    Vote save(int restaurantId, LocalDate day, int userId);
 
     void delete(int id, int userid);
 
-    List<Vote> getFilter(Integer restaurantid, Integer userId, LocalDate localDate, LocalDate localDate1);
+    List<Vote> getFilter(boolean FilterByRestraunt, Integer restaurantid, boolean filterByUsre, Integer userId, LocalDate localDate, LocalDate localDate1);
 
 }

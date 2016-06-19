@@ -9,4 +9,6 @@ public interface DishService{
     Dish save(Dish dish);
 
     Dish update(Dish dish);
+
+    void delete(int id, int menuId);
 }

@@ -20,7 +20,5 @@ public interface MenuService {
 
     Menu update(Menu menu);
 
-    List<Menu> getFilter(LocalDate startDay, LocalDate endDay);
-
-    List<Menu> getFilter(Restaurant restaurant, LocalDate startDay, LocalDate endDay);
+    List<Menu> getFilter(boolean FilterByRestaurant, Integer restaurantId, LocalDate startDay, LocalDate endDay);
 }

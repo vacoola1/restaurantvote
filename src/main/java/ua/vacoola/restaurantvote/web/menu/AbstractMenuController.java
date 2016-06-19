@@ -54,17 +54,12 @@ public class AbstractMenuController {
 
     public List<Menu> getFilterPerDay(LocalDate day) {
         log.info("getFilterPerDay");
-        return menuService.getFilter(day, day);
+        return menuService.getFilter(false, null, day, day);
     }
 
-    public List<Menu> getFilter(Restaurant restaurant, LocalDate startDay, LocalDate endDay) {
+    public List<Menu> getFilter(Integer restaurantId, LocalDate startDay, LocalDate endDay) {
         log.info("getFilter");
-        if (restaurant == null) {
-            return menuService.getFilter((startDay == null) ? LocalDate.MIN : startDay, (endDay == null) ? LocalDate.MAX : endDay);
-        } else {
-            return menuService.getFilter(restaurant, (startDay == null)? LocalDate.MIN: startDay, (endDay == null)? LocalDate.MAX: endDay);
-        }
-
+        return menuService.getFilter(restaurantId != null, restaurantId, (startDay == null) ? LocalDate.MIN : startDay, (endDay == null) ? LocalDate.MAX : endDay);
     }
 
     public Dish createDish(Dish dish) {
@@ -79,5 +74,10 @@ public class AbstractMenuController {
         dishService.update(dish);
     }
 
+    public void deleteDish(int id, int menuId) {
+        log.info("deleteDish " + id + "menuId " + menuId);
+        dishService.delete(id, menuId);
+
+    }
 }
 

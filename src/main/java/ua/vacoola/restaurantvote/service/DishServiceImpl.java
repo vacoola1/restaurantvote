@@ -24,4 +24,9 @@ public class DishServiceImpl implements DishService {
     public Dish update(Dish dish) {
         return ExceptionUtil.check(repository.save(dish), dish.getId());
     }
+
+    @Override
+    public void delete(int id, int menuId) {
+        repository.delete(id, menuId);
+    }
 }

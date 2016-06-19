@@ -28,7 +28,7 @@ public class AdminVoteRestController extends AbstractVoteController {
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
-    public Vote getFilter(@RequestParam(name = "restaurantId", required = false) Integer restaurantId,
+    public List<Vote> getFilter(@RequestParam(name = "restaurantId", required = false) Integer restaurantId,
                           @RequestParam(name = "userId", required = false) Integer userId,
                           @RequestParam(name = "startDay", required = false) LocalDate startDay,
                           @RequestParam(name = "endDay", required = false) LocalDate endDay)

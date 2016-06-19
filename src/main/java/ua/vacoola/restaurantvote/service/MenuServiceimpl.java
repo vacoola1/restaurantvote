@@ -2,8 +2,11 @@ package ua.vacoola.restaurantvote.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ua.vacoola.restaurantvote.model.Dish;
 import ua.vacoola.restaurantvote.model.Menu;
 import ua.vacoola.restaurantvote.model.Restaurant;
+import ua.vacoola.restaurantvote.repository.DishRepository;
 import ua.vacoola.restaurantvote.repository.MenuRepository;
 import ua.vacoola.restaurantvote.util.exception.ExceptionUtil;
 
@@ -17,40 +20,81 @@ import java.util.List;
 public class MenuServiceimpl implements MenuService {
 
     @Autowired
-    private MenuRepository repository;
+    private MenuRepository menuRepository;
+
+    @Autowired
+    private DishRepository dishRepository;
 
     @Override
     public List<Menu> getAll() {
-        return repository.getAll();
+        return menuRepository.getAll();
     }
 
     @Override
     public Menu get(int id) {
-        return ExceptionUtil.check(repository.get(id), id);
+        return ExceptionUtil.check(menuRepository.get(id), id);
     }
 
     @Override
+    @Transactional
     public Menu save(Menu menu) {
-        return repository.save(menu);
+
+        Menu savedMenu = menuRepository.save(menu);
+
+
+        List<Dish> oldDishs = dishRepository.getForMenu(savedMenu.getId());
+        List<Dish> newDishs = menu.getDishs();
+
+        for (int i = oldDishs.size() - 1; i >= 0; i--) {
+            if (!newDishs.contains(oldDishs.get(i))) {
+                dishRepository.delete(oldDishs.get(i).getId(), savedMenu.getId());
+            }
+        }
+
+        savedMenu.getDishs().clear();
+
+        for (Dish dish : newDishs) {
+            savedMenu.getDishs().add(dishRepository.save(dish));
+        }
+
+        return savedMenu;
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
-        ExceptionUtil.check(repository.delete(id), id);
+
+        ExceptionUtil.check(dishRepository.deleteForMenu(id), id);
+        ExceptionUtil.check(menuRepository.delete(id), id);
+
     }
 
     @Override
+    @Transactional
     public Menu update(Menu menu) {
-        return ExceptionUtil.check(repository.save(menu), menu.getId());
+
+        Menu savedMenu = ExceptionUtil.check(menuRepository.save(menu), menu.getId());
+
+        List<Dish> oldDishs = dishRepository.getForMenu(savedMenu.getId());
+        List<Dish> newDishs = menu.getDishs();
+
+        for (int i = oldDishs.size() - 1; i >= 0; i--) {
+            if (!newDishs.contains(oldDishs.get(i))) {
+                dishRepository.delete(oldDishs.get(i).getId(), savedMenu.getId());
+            }
+        }
+
+        savedMenu.getDishs().clear();
+
+        for (Dish dish : newDishs) {
+            savedMenu.getDishs().add(dishRepository.save(dish));
+        }
+
+        return savedMenu;
     }
 
     @Override
-    public List<Menu> getFilter(LocalDate startDay, LocalDate endDay) {
-        return repository.getFilter(startDay, endDay);
-    }
-
-    @Override
-    public List<Menu> getFilter(Restaurant restaurant, LocalDate startDay, LocalDate endDay) {
-        return repository.getFilter(restaurant, startDay, endDay);
+    public List<Menu> getFilter(boolean FilterByRestaurant, Integer restaurantId, LocalDate startDay, LocalDate endDay) {
+        return menuRepository.getFilter(true, restaurantId, startDay, endDay);
     }
 }

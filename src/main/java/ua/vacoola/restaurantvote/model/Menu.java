@@ -5,21 +5,28 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by r.vakulenko on 30.05.2016.
  */
+@NamedQueries({
+        @NamedQuery(name = Menu.DELETE, query = "DELETE FROM Menu m WHERE m.id=:id"),
+        @NamedQuery(name = Menu.ALL, query = "SELECT m FROM Menu m"),
+        @NamedQuery(name = Menu.FILTER, query = "SELECT m FROM Menu m " +
+                "WHERE m.day>=:startDay AND m.day<=:endDay " +
+                "AND (:FilterByRestaurant = false OR m.restaurant.id = :restaurantId)")
+})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "menues", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "day"}, name = "restaurant_id_day_idx")})
 public class Menu extends BaseEntity {
+
+    public static final String DELETE = "Menu.delete";
+    public static final String ALL = "Menu.getAll";
+    public static final String FILTER = "Menu.filter";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)

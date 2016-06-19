@@ -1,7 +1,6 @@
 package ua.vacoola.restaurantvote.repository;
 
 import ua.vacoola.restaurantvote.model.Menu;
-import ua.vacoola.restaurantvote.model.Restaurant;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +17,5 @@ public interface MenuRepository {
 
     boolean delete(int id);
 
-    List<Menu> getFilter(LocalDate startDay, LocalDate endDay);
-
-    List<Menu> getFilter(Restaurant restaurant, LocalDate startDay, LocalDate endDay);
+    List<Menu> getFilter(boolean FilterByRestaurant, Integer restaurantId, LocalDate startDay, LocalDate endDay);
 }

@@ -46,7 +46,7 @@ public class ProfileVoteRestController extends AbstractVoteController{
     }
 
     @RequestMapping(value = "/now/{restaurantId}/{day}", method = RequestMethod.POST)
-    public ResponseEntity<Vote> createWithLocation(@PathVariable("restaurantId") int restaurantId, @PathVariable("day") int day) {
+    public ResponseEntity<Vote> createWithLocation(@PathVariable("restaurantId") int restaurantId, @PathVariable("day") LocalDate day) {
 
         Vote created = super.create(restaurantId, day, LoggedUser.id());
 
@@ -59,7 +59,7 @@ public class ProfileVoteRestController extends AbstractVoteController{
     }
 
     @RequestMapping(value = "/now/{restaurantId}/{day}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("restaurantId") int restaurantId, @PathVariable("day") int day) {
+    public void update(@PathVariable("restaurantId") int restaurantId, @PathVariable("day") LocalDate day) {
         super.update(restaurantId, day, LoggedUser.id());
     }
 

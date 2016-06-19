@@ -1,5 +1,7 @@
 package ua.vacoola.restaurantvote.repository;
 
+import ua.vacoola.restaurantvote.model.Restaurant;
+import ua.vacoola.restaurantvote.model.User;
 import ua.vacoola.restaurantvote.model.Vote;
 
 import java.time.LocalDate;
@@ -17,12 +19,12 @@ public interface VoteRepository {
 
     Vote get(int id, int userId);
 
-    List<Vote> getFilter(Integer restaurantId, Integer userId, LocalDate startDate, LocalDate endDate);
+    List<Vote> getFilter(boolean FilterByRestaurant, Integer restaurantId, boolean FilterByUser, Integer userId, LocalDate startDate, LocalDate endDate);
 
-    Vote getForDay(LocalDate now, int userId);
+    Vote getForDay(LocalDate day, int userId);
 
-    Vote save(int restaurantId, int day, int userId);
+    Vote save(Restaurant restaurant, LocalDate day, User user);
 
-    void delete(int id, int userid);
+    boolean delete(int id, int userid);
 
 }

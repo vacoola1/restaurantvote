@@ -39,11 +39,11 @@ public class MenuRestController extends AbstractMenuController {
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
-    public List<Menu> getFilter(@RequestParam(name = "restaurant", required = false) Restaurant restaurant,
+    public List<Menu> getFilter(@RequestParam(name = "restaurantId", required = false) Integer restaurantId,
                           @RequestParam(name = "startDay", required = false) LocalDate startDay,
                           @RequestParam(name = "endDay", required = false) LocalDate endDay)
     {
-        return super.getFilter(restaurant, startDay, endDay);
+        return super.getFilter(restaurantId, startDay, endDay);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -87,5 +87,9 @@ public class MenuRestController extends AbstractMenuController {
         super.updateDish(dish, id);
     }
 
+    @RequestMapping(value = "/{menuId}/dishes/{id}", method = RequestMethod.DELETE)
+    public void deleteDish(@PathVariable("menuId") int menuId, @PathVariable("id") int id) {
+        super.deleteDish(id, menuId);
+    }
 
 }

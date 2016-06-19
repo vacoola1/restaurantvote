@@ -1,12 +1,18 @@
 package ua.vacoola.restaurantvote.service;
 
+import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.vacoola.restaurantvote.model.Restaurant;
+import ua.vacoola.restaurantvote.model.User;
 import ua.vacoola.restaurantvote.model.Vote;
+import ua.vacoola.restaurantvote.repository.RestaurantRepository;
+import ua.vacoola.restaurantvote.repository.UserRepository;
 import ua.vacoola.restaurantvote.repository.VoteRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by r.vakulenko on 16.06.2016.
@@ -16,6 +22,10 @@ public class VoteServiceImpl implements VoteService {
 
     @Autowired
     private VoteRepository repository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Override
     public List<Vote> getAll() {
@@ -43,8 +53,10 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Vote save(int restaurantId, int day, int userId) {
-        return repository.save(restaurantId, day, userId);
+    public Vote save(int restaurantId, LocalDate day, int userId) {
+        User user = Objects.requireNonNull(userRepository.get(userId));
+        Restaurant restaurant = Objects.requireNonNull(restaurantRepository.get(restaurantId));
+        return repository.save(restaurant, day, user);
     }
 
     @Override
@@ -53,7 +65,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public List<Vote> getFilter(Integer restaurantid, Integer userId, LocalDate startDate, LocalDate endDate) {
-        return repository.getFilter(restaurantid, userId, startDate, endDate);
+    public List<Vote> getFilter(boolean filterByRestraunt, Integer restaurantid, boolean filterByUsre, Integer userId, LocalDate startDate, LocalDate endDate) {
+        return repository.getFilter(filterByRestraunt, restaurantid, filterByUsre, userId, startDate, endDate);
     }
 }

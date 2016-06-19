@@ -32,9 +32,9 @@ public class AbstractVoteController {
         return service.get(id);
     }
 
-    public List<Vote> getFilter(Integer restaurantid, Integer userId, LocalDate startDay, LocalDate endDay) {
+    public List<Vote> getFilter(Integer restaurantId, Integer userId, LocalDate startDay, LocalDate endDay) {
         log.info("getFilter");
-        return service.getFilter(restaurantid, userId, (startDay == null) ? LocalDate.MIN : startDay, (endDay == null) ? LocalDate.MAX : endDay);
+        return service.getFilter(restaurantId != null, restaurantId, userId != null, userId, (startDay == null) ? LocalDate.MIN : startDay, (endDay == null) ? LocalDate.MAX : endDay);
     }
 
     public List<Vote> getAll(int userId) {
@@ -52,11 +52,11 @@ public class AbstractVoteController {
         return service.getNow(userId);
     }
 
-    public Vote create(int restaurantId, int day, int userId) {
+    public Vote create(int restaurantId, LocalDate day, int userId) {
         log.info("create restaurantId " + restaurantId+", day "+ ", userId "+userId);
         return service.save(restaurantId, day, userId);    }
 
-    public void update(int restaurantId, int day, int userId) {
+    public void update(int restaurantId, LocalDate day, int userId) {
         log.info("update restaurantId " + restaurantId+", day "+ ", userId "+userId);
         service.save(restaurantId, day, userId);
     }
