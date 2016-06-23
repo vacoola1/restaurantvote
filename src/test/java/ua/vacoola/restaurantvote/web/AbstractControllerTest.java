@@ -1,8 +1,11 @@
 package ua.vacoola.restaurantvote.web;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.RestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,6 +19,11 @@ import ua.vacoola.restaurantvote.service.UserService;
 
 import javax.annotation.PostConstruct;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static ua.vacoola.restaurantvote.Profiles.JPA;
 import static ua.vacoola.restaurantvote.Profiles.POSTGRES;
@@ -52,6 +60,11 @@ abstract public class AbstractControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Rule
+    public RestDocumentation restDocumentation = new RestDocumentation("target/generated-snippets");
+
+    protected RestDocumentationResultHandler document;
+
     @PostConstruct
     private void postConstruct() {
         mockMvc = MockMvcBuilders
@@ -65,6 +78,16 @@ abstract public class AbstractControllerTest {
 
     @Before
     public void setUp() {
+
+        this.document = document("{method-name}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()));
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
+                .addFilter(CHARACTER_ENCODING_FILTER)
+                .apply(documentationConfiguration(this.restDocumentation))
+                .alwaysDo(this.document)
+                .build();
 /*
         userService.evictCache();
 */
